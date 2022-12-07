@@ -1,0 +1,564 @@
+//  Ugly numbers are positive numbers whose prime factors only include 2, 3, 5.
+// Note that 1 is typically treated as an ugly number. As example, 10th ugly number
+// is 12, because first 10 ugly numbers are 1, 2, 3, 4, 5, 6, 8, 9, 10, 12. Write a
+// program to find the n-th ugly number. In this program, input is the n as positive
+// integer.0
+
+#include <bits/stdc++.h>
+using namespace std;
+
+int minimum(int a, int b, int c)
+{
+    int min;
+    if (a < b && a < c)
+    {
+        min = a;
+    }
+    else if (b < c)
+    {
+        min = b;
+    }
+    else
+    {
+        min = c;
+    }
+    return min;
+}
+
+int main()
+{
+    int n;
+    cout << "Which ugly number you want to find : ";
+    cin >> n;
+    int c2 = 0, c3 = 0, c5 = 0;
+    vector<int> vec(n + 1);
+    vec[0] = 1;
+    for (int i = 1; i < n + 1; i++)
+    {
+
+        int a = 2 * vec[c2];
+        int b = 3 * vec[c3];
+        int c = 5 * vec[c5];
+
+        vec[i] = minimum(a, b, c);
+
+        if (2 * vec[c2] == vec[i])
+        {
+            c2++;
+        }
+        if (3 * vec[c3] == vec[i])
+        {
+            c3++;
+        }
+        if (5 * vec[c5] == vec[i])
+        {
+            c5++;
+        }
+    }
+    cout << n << "th ugly number is : " << vec[n - 1];
+
+    return 0;
+}
+
+
+// string matching Naive Algorithm
+
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    string T, P;
+    cout << "enter a text :  ";
+    cin >> T;
+    cout << "enter a pattern to search : ";
+    cin >> P;
+    int n = T.length();
+    int m = P.length();
+    // int numberOfIterations = 0;
+    int count = 0;
+    cout << "Pattern matches at index : ";
+    for (int i = 0; i <= n - m; i++)
+    {
+        int c = 0;
+        for (int j = 0; j < m; j++)
+        {
+            // numberOfIterations++;
+            if (P[j] == T[i + j])
+                c++;
+        }
+        if (c == m)
+        {
+            cout << i << " ";
+            count++;
+        }
+    }
+    cout << "\nTotal matches : " << count;
+    // cout << "\n n = " << n << " m = " << m;
+    // cout << "\nTotal iterations : " << numberOfIterations << " (n-m+1)*m";
+}
+
+
+
+// string matching after modifiying  Naive Algorithm
+
+
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    string T, P;
+    cout << "enter a text :  ";
+    cin >> T;
+    cout << "enter a pattern to search : ";
+    cin >> P;
+    int n = T.length();
+    int m = P.length();
+    // int numberOfIterations =0 ;
+    int count = 0;
+    cout << "Pattern matches at index : ";
+    int i = 0;
+    while (i <= n - m)
+    {
+        int c = 0;
+        for (int j = 0; j < m; j++)
+        {
+            // numberOfIterations++ ;
+            if (P[j] == T[i + j])
+            {
+                c++;
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (c == m)
+        {
+            cout << i << " ";
+            count++;
+            i = i + m;
+        }
+        else
+            i++;
+    }
+    cout << "\nTotal matches : " << count;
+    // cout << "\n n = "<< n << " m = "<< m ;
+    // cout << "\nTotal iterations : " << numberOfIterations ;
+}
+
+
+* Write a program for the Rabin-Karp algorithm. Using the written program, find out
+number of spurious hits does the Rabin-Karp matcher encounter in the text
+T = 3141592653589793 when looking for the pattern P = 26. Consider working modulo
+q = 11. */
+#include <bits/stdc++.h>
+using namespace std;
+int M = 11;
+int main()
+{
+    string text, pattern;
+    cout << "Enter the text : ";
+    cin >> text;
+    fflush(stdin);
+    cout << "Enter the pattern to be searched :  ";
+    cin >> pattern;
+    int pmat = 0, t0 = 0;
+    int n = text.size(), k = pattern.size();
+    for (int i = 0; i < k; i++)
+    {
+        pmat = ((pmat * 10) % M + (pattern[i] - '0')) % M;
+        t0 = ((t0 * 10) % M + (text[i] - '0')) % M;
+    }
+    vector<int> t(n);
+    t[0] = t0;
+    // cout<<"pmat= "<<pmat<<"\n";
+    // cout<<"t0 = "<<t[0]<<"\n";s
+    int prod = ((int)pow(10, k - 1)) % M;
+    for (int i = 1; i < n - k + 1; i++)
+    {
+        int x = 10 * (t[i - 1] - prod * (text[i - 1] - '0'));
+        t[i] = (x + (text[i + k - 1] - '0')) % M;
+        if (t[i] < 0)
+        {
+            t[i] += M;
+        }
+
+        // cout<<"i= "<<i<<" t[i]= "<<t[i]<<" \n";
+    }
+    int matchCnt = 0;
+    for (int i = 0; i < n - k + 1; i++)
+    {
+        if (t[i] == pmat)
+        {
+            matchCnt++;
+            int j = 0;
+            for (j = 0; j < k; j++)
+            {
+                if (text[i + j] != pattern[j])
+                {
+                    break;
+                }
+            }
+            if (j == k)
+            {
+                cout << "\nPattern found at index : " << i << "\n";
+                // matchCnt++;
+            }
+        }
+    }
+    cout << "Number of hits : " << matchCnt << "\n";
+    if (matchCnt == 0)
+    {
+        cout << "Pattern not Found!!\n";
+    }
+}
+
+kmp
+
+
+// m+t
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> prefix_function(string m)
+{
+    int n = m.size();
+    vector<int> pi(n, 0);
+    for (int i = 1; i < n; i++)
+    {
+        int j = pi[i - 1];
+
+        while (j > 0 and m[i] != m[j])
+        {
+            j = pi[j - 1];
+        }
+
+        if (m[i] == m[j])
+        {
+            j++;
+        }
+        pi[i] = j;
+    }
+    return pi;
+}
+int main()
+{
+
+    string t, m;
+    cout << "enter the text :";
+    cin >> t;
+    cout << "enter the matching string : ";
+    cin >> m;
+    vector<int> prefix = prefix_function(m);
+    vector<int> ans;
+    int val(0);
+    int pos = -1;
+    int i = 0, j = 0;
+    while (i < t.size())
+    {
+        if (t[i] == m[j])
+        {
+            j++;
+            i++;
+        }
+        else
+        {
+            if (j != 0)
+            {
+                j = prefix[j - 1];
+            }
+            else
+            {
+                i++;
+            }
+        }
+        if (j == m.size())
+        {
+            pos = i - m.size();
+            // break;
+            ans.push_back(pos);
+        }
+    }
+    cout << "string found at index : ";
+    // cout << pos;
+    for(auto res:  ans){
+           cout<<res<<" ";
+    }
+
+    cout << endl;
+    return 0;
+}
+
+
+// Write a program for 2-approximation algorithm of Travelling Salesperson Problem.
+#include <bits/stdc++.h>
+using namespace std;
+#define fastio                        \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);
+typedef long long ll;
+
+void PrimsMst(vector<vector<pair<ll, ll>>> graph)
+{
+    int v = graph.size();
+    priority_queue<pair<ll, ll>, vector<pair<ll, ll>>, greater<pair<ll, ll>>> pq;
+    vector<ll> wt(v, INT_MAX);
+    vector<bool> inMst(v, false);
+    vector<ll> par(v);
+    par[0] = -1;
+    pq.push({0, 0});
+    wt[0] = 0;
+    ll cost = 0;
+    while (!pq.empty())
+    {
+        int u = pq.top().second, w = pq.top().first;
+        pq.pop();
+        if (!inMst[u])
+        {
+            cost += w;
+        }
+        inMst[u] = true;
+        for (int i = 0; i < graph[u].size(); i++)
+        {
+            int v = graph[u][i].first, vwt = graph[u][i].second;
+            if (!inMst[v] && wt[v] > (vwt))
+            {
+                wt[v] = vwt;
+                par[v] = u;
+                pq.push({wt[v], v});
+            }
+        }
+    }
+    cout << "MST : \n";
+    for (int i = 1; i < v; i++)
+    {
+        cout << par[i] << "  -->  " << i << "\n";
+    }
+    cout << "\nCost : " << cost << "\n";
+}
+int main()
+{
+    int v;
+    cout << "Enter number of vertices : ";
+    cin >> v;
+    vector<vector<pair<ll, ll>>> graph(v);
+    cout << "Enter number of edges : ";
+    int e;
+    cin >> e;
+    cout << "Enter the edges respectively : (U --> V of weight W as U, V, W ) \n ";
+    for (int i = 0; i < e; i++)
+    {
+        int u, v, w;
+        cin >> u >> v >> w;
+        graph[u].push_back({v, w});
+    }
+    PrimsMst(graph);
+}
+
+
+
+// Write a program for 2-approximation algorithm of Vertex-Cover Problem.
+// 2- Approximation Algorithm 
+#include<bits/stdc++.h>
+using namespace std;
+#define fastio ios_base::sync_with_stdio(false); cin.tie(NULL);
+typedef long long ll;
+
+vector<int> vertexCover(vector<vector<int>> &edges,int v)
+{
+    vector<int> vc;
+    while (edges.size())
+    {
+        int v= edges[0][0], u= edges[0][1];
+        vc.push_back(u);
+        vc.push_back(v);
+        for (int i = 0; i <edges.size(); i++)
+        {
+            if (edges[i][0]==u||edges[i][0]==v||edges[i][1]==u||edges[i][1]==v)
+            {
+                edges.erase(edges.begin()+i);
+                i--;
+            }
+        }
+    }
+    return vc;
+}
+int main()
+{   
+    int v,e;
+    cout<<"Enter number of vertices and edges respectively : ";
+    cin>>v>>e;
+    vector<vector<int>> edges;
+    for (int i = 0; i <e; i++)
+    {
+        int u,v;
+        cin>>u>>v;
+        edges.push_back({u,v});
+    }
+    vector<int> VetrtCov= vertexCover(edges,v);
+    cout<<"Vertex Cover: ";
+    for(auto x: VetrtCov)
+    cout<<x<<" ";
+}
+
+1.5 task scheduling algorithm
+
+
+#include <bits/stdc++.h>
+using namespace std;
+#define fastio                        \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);
+typedef long long ll;
+
+void taskScheduling1(int &machines, vector<pair<int, int>> exec)
+{
+    int tasks = exec.size();
+    sort(exec.begin(), exec.end());
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    for (int i = 0; i < machines; i++)
+    {
+        pq.push({0, i});
+    }
+    ll maxTime = 0;
+    for (int i = 0; i < tasks; i++)
+    {
+        int m = pq.top().second, t = pq.top().first;
+        pq.pop();
+        cout << "Task  " << exec[i].second << " assigned to  machine" << m << " at time " << t << "  and completed at " << t + exec[i].first << "\n";
+        pq.push({t + exec[i].first, m});
+        maxTime = max(maxTime, 1ll * exec[i].first + t);
+    }
+    cout << "Completion time of all tasks by 1.5 Approx scheduling Algorithm  : "<< maxTime;
+}
+void taskScheduling2(int &machines, vector<pair<int, int>> exec)
+{
+    int tasks = exec.size();
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    for (int i = 0; i < machines; i++)
+    {
+        pq.push({0, i});
+    }
+    ll maxTime = 0;
+    for (int i = 0; i < tasks; i++)
+    {
+        int m = pq.top().second, t = pq.top().first;
+        pq.pop();
+        cout << "Task  " << exec[i].second << " assigned to machine  " << m << " at time " << t << "  and completed at " << t + exec[i].first << "\n";
+        pq.push({t + exec[i].first, m});
+        maxTime = max(maxTime, 1ll * exec[i].first + t);
+    }
+    cout << "Completion time of all tasks by 2 Approx scheduling Algorithm : "<< maxTime;
+}
+int main()
+{
+    int tasks, machines;
+    cout << "Enter number of Machines : ";
+    cin >> machines;
+    cout << "Enter number of tasks  : ";
+    cin >> tasks;
+    vector<int> machTime(machines, 0);
+    vector<pair<int, int>> exec;
+    cout << "Enter the execution time of each task  : \n ";
+    for (int i = 0; i < tasks; i++)
+    {
+        int tem;
+        cin >> tem;
+        exec.push_back({tem, i});
+    }
+    taskScheduling1(machines,exec);
+    cout<<"\n\n";
+    taskScheduling2(machines,exec);
+}
+
+2-approx task schedulling 
+
+
+
+#include <bits/stdc++.h>
+using namespace std;
+#define fastio                        \
+    ios_base::sync_with_stdio(false); \
+    cin.tie(NULL);
+typedef long long ll;
+
+bool cmp(vector<int> a, vector<int> b)
+{
+    return a.size() >= b.size();
+}
+vector<vector<int>> setCover(vector<int> unvSet, vector<vector<int>> subsets)
+{
+    int n = unvSet.size();
+    map<int, bool> mp;
+    for (int i = 0; i < n; i++)
+    {
+        mp[unvSet[i]] = false;
+    }
+    vector<vector<int>> res;
+    sort(subsets.begin(), subsets.end(), cmp);
+    for (int i = 0; i < subsets.size(); i++)
+    {
+        for (int j = 0; j < subsets[i].size(); j++)
+        {
+            mp[subsets[i][j]] = true;
+        }
+        res.push_back(subsets[i]);
+        bool tem = true;
+        for (auto m : mp)
+        {
+            tem = tem & m.second;
+        }
+        if (tem)
+        {
+            // break;
+            return res;
+        }
+    }
+    return {{}};
+}
+int main()
+{
+    int n;
+    cout << "Enter the size of universal set: ";
+    cin >> n;
+    vector<int> unvSet(n);
+    cout << "Enter the elements of universal set : ";
+    for (int i = 0; i < n; i++)
+    {
+        cin >> unvSet[i];
+    }
+    int nsbsets;
+    cout << "Enter number of subsets : ";
+    cin >> nsbsets;
+    vector<vector<int>> subsets;
+    cout << "Enter all the subsets : (size ,then elements of subset ) \n : ";
+    for (int i = 0; i < nsbsets; i++)
+    {
+        int t;
+        cin >> t;
+        vector<int> temp(t);
+        for (int j = 0; j < t; j++)
+        {
+            cin >> temp[j];
+        }
+        subsets.push_back(temp);
+    }
+    auto res = setCover(unvSet, subsets);
+    cout << "Set Cover : \n";
+    for (auto x : res)
+    {
+        for (auto y : x)
+        {
+            cout << y << " ";
+        }
+        cout << "\n";
+    }
+}
+
+
+
+
